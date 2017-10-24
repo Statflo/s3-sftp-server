@@ -1,0 +1,17 @@
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%20.20t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wex"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
+    <logger name="com.dataexchange.server" level="debug"/>
+
+    <logger name="org.springframework" level="info"/>
+    <logger name="org.apache.sshd" level="info"/>
+
+    <root level="${logback.root.level:-info}">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

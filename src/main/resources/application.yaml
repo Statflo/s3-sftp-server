@@ -1,0 +1,59 @@
+app:
+  sftp:
+    port: 8888 # Sftp server port
+    base-folder: D:\Temp\test-sftp
+    users:
+      -
+        username: testwithkey
+        public-key: ssh-rsa AAAAB3NzaC1yc2EAAAABJQAAAQEAq3pyEpghppeIgw9UgkIx/qgSVqMc63vVeVwLV+7U3uqhnSaefJqneL1Z8n2XxbMC+Fl8/r4Wx+fdbRBZojGeyHOAwi63YFQmHtkfKiko8Cnz3Cds09OzShEBv8W8eMY4HpRTYElxb7I5QQAKg5wPPP2Eip6WoChQfz44nzD0SAEbAcj5jKb0tXfxS3ePU3iHRjjbqRTNE4crsuR7xPKwf/RrQEWDlYKNchwgq1atyJETfcuxPJm9KVmbZAiOcVpHpDllQ1+HxVTE33B5qxJGx0gtJenS5Xjgtzw5cxa9CvmPpsq4oHjgLzvgWSsHTg7u7BzoZ6OkTN0yS1UkCfB0lw== rsa-key-20170427
+      -
+        username: test
+        password: pass
+    aws:
+#      access-key: # Optional: If not provided withing the env
+#      secret-key: # Optional: If not provided withing the env
+#      assume-role: # Optional: If not provided withing the env
+      bucket-name: your.bucket.name # Bucket name
+      
+server:
+  port: 8090
+
+spring:
+  application:
+    name: sftpDataExchange
+  datasource:
+    platform: h2
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:sftp_dataexchange
+    username: sa
+    password:
+    tomcat:
+      min-idle: 1
+      max-idle: 2
+      max-active: 15
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+  jpa:
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        cache:
+          use_second_level_cache: false
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
+
+management:
+  context-path: /manage
+  security:
+    enabled: true
+
+security:
+  basic:
+    enabled: false
