@@ -43,8 +43,6 @@ import java.util.*;
 @EnableConfigurationProperties(SftpServer.SftpServerConfiguration.class)
 public class SftpServer {
 
-    private boolean awsStorage = false;
-
     @Value("${app.sftp.aws.bucket-name}")
     private String bucketName;
 
@@ -58,7 +56,7 @@ public class SftpServer {
 
     @Bean
     public FileSystemFactory userRootedFileSystemFactory() throws IOException, URISyntaxException {
-        if (awsStorage) {
+        if (StringUtils.hasText(bucketName)) {
             sftpHomeDir = getS3BucketPath();
         } else {
             sftpHomeDir = FileSystems.getDefault().getPath(properties.getBaseFolder());
@@ -76,7 +74,7 @@ public class SftpServer {
         sshServer.setCommandFactory(new ScpCommandFactory());
 
         SftpSubsystemFactory sftpSubsystemFactory = new SftpSubsystemFactory();
-        if (awsStorage) {
+        if (StringUtils.hasText(bucketName)) {
             // For AWS storage to ignore S3FileSystemProvider.setAttribute
             sftpSubsystemFactory.setUnsupportedAttributePolicy(UnsupportedAttributePolicy.Ignore);
         }

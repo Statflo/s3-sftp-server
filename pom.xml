@@ -5,7 +5,7 @@
 
 	<groupId>com.dataexchange.server</groupId>
 	<artifactId>s3-sftp</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>s3-sftp-server</name>
@@ -90,5 +90,60 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- Internal Maven Repository -->
+	<repositories>
+		<repository>
+			<id>snapshots-local</id>
+			<url>http://repo.zooplus.de/artifactory/snapshots-local</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>operations-local</id>
+			<url>http://repo.zooplus.de/artifactory/operations-local</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>libs-local</id>
+			<url>http://repo.zooplus.de/artifactory/libs-local</url>
+		</repository>
+		<repository>
+			<id>remote-repos</id>
+			<url>http://repo.zooplus.de/artifactory/remote-repos</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>libs-local</id>
+			<url>http://repo.zooplus.de/artifactory/libs-local</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>remote-repos</id>
+			<url>http://repo.zooplus.de/artifactory/remote-repos</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<!-- Repository deploy configuration -->
+	<distributionManagement>
+		<repository>
+			<id>operations-local</id>
+			<url>http://repo.zooplus.de/artifactory/operations-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots-local</id>
+			<url>http://repo.zooplus.de/artifactory/snapshots-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 </project>
