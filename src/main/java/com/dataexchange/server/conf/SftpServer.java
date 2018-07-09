@@ -1,7 +1,6 @@
 package com.dataexchange.server.conf;
 
 import com.dataexchange.server.aws.CustomAmazonS3ClientFactory;
-import com.dataexchange.server.aws.CustomAssumeRoleSessionCredentialsProvider;
 import com.dataexchange.server.domain.UserService;
 import com.dataexchange.server.sshd.TrackingSftpEventListener;
 import com.dataexchange.server.sshd.UserPublicKeyAuthenticator;
@@ -21,7 +20,6 @@ import org.apache.sshd.server.subsystem.sftp.UnsupportedAttributePolicy;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -91,13 +89,6 @@ public class SftpServer {
         return sshServer;
     }
 
-    @ConditionalOnProperty(value = "app.sftp.aws.access-key")
-    @Bean
-    public CustomAssumeRoleSessionCredentialsProvider assumeRoleSessionCredentialsProvider(@Value("${app.sftp.aws.access-key}") String accessKey,
-                                                                                           @Value("${app.sftp.aws.secret-key}") String secretKey,
-                                                                                           @Value("${app.sftp.aws.assume-role}") String assumeRole) {
-        return new CustomAssumeRoleSessionCredentialsProvider(accessKey, secretKey, assumeRole);
-    }
 
     private Path getS3BucketPath() throws URISyntaxException, IOException {
         Map<String, ?> env = ImmutableMap.<String, Object>builder()

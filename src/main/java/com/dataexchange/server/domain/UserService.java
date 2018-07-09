@@ -25,7 +25,7 @@ public class UserService {
     public void checkOrAutoCreateUserForPrivateKeyAuthentication(String username) {
         AuthUserEntity authUser = authUserJpaRepository.findByUsername(username);
         if (authUser == null) {
-            LOGGER.info("Auto creating user {] with private key", username);
+            LOGGER.info("Auto creating user {} with private key", username);
             authUser = new AuthUserEntity();
             authUser.setUsername(username);
             authUser.setPassword("AUTO_GENERATED_SSH_KEY");
@@ -36,7 +36,7 @@ public class UserService {
     public void createUserIfNotExisting(String username, String password) {
         AuthUserEntity authUser = authUserJpaRepository.findByUsername(username);
         if (authUser == null) {
-            LOGGER.info("Auto creating user {] with password", username);
+            LOGGER.info("Auto creating user {} with password", username);
             authUser = new AuthUserEntity();
             authUser.setUsername(username);
             authUser.setPassword(passwordEncoder.encode(password));
