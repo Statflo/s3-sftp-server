@@ -16,6 +16,7 @@ public class CustomAmazonS3Client extends AmazonS3Client {
 
     public CustomAmazonS3Client(AWSCredentialsProvider credentialsProvider, ClientConfiguration clientConfiguration,
                                 RequestMetricCollector requestMetricsCollector) {
+
         super(credentialsProvider, clientConfiguration, requestMetricsCollector);
     }
 

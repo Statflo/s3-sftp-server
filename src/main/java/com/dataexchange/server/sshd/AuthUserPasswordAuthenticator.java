@@ -43,12 +43,18 @@ public class AuthUserPasswordAuthenticator implements PasswordAuthenticator {
     @Override
     public boolean authenticate(String username, String password, ServerSession session) throws PasswordChangeRequiredException {
         AuthUserEntity authUser = authUserJpaRepository.findByUsername(username);
+        System.out.println("Trying to find username");
+        System.out.println(username);
         if (authUser != null) {
+            System.out.println("Found user");
             if (passwordEncoder.matches(password, authUser.getPassword())) {
                 return true;
+            } else {
+                System.out.println("Password mismatch");
             }
+        } else {
+            System.out.println("User not found");
         }
-
         return false;
     }
 }

@@ -6,36 +6,42 @@ import com.dataexchange.server.sshd.TrackingSftpEventListener;
 import com.dataexchange.server.sshd.UserPublicKeyAuthenticator;
 import com.dataexchange.server.sshd.file.UserRootedFileSystemFactory;
 import com.dataexchange.server.sshd.util.AuthorizedKeysUtils;
+
 import com.google.common.collect.ImmutableMap;
+
 import com.upplication.s3fs.S3FileSystemProvider;
+
 import org.apache.sshd.common.file.FileSystemFactory;
 import org.apache.sshd.server.SshServer;
 import org.apache.sshd.server.auth.password.PasswordAuthenticator;
 import org.apache.sshd.server.auth.pubkey.PublickeyAuthenticator;
-import org.apache.sshd.server.keyprovider.SimpleGeneratorHostKeyProvider;
 import org.apache.sshd.server.scp.ScpCommandFactory;
 import org.apache.sshd.server.shell.ProcessShellFactory;
 import org.apache.sshd.server.subsystem.sftp.SftpSubsystemFactory;
 import org.apache.sshd.server.subsystem.sftp.UnsupportedAttributePolicy;
+
 import org.hibernate.validator.constraints.NotBlank;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.PublicKey;
 import java.util.*;
+import java.util.Collections;
 
 @Configuration
 @EnableConfigurationProperties(SftpServer.SftpServerConfiguration.class)
@@ -57,7 +63,7 @@ public class SftpServer {
         if (StringUtils.hasText(bucketName)) {
             sftpHomeDir = getS3BucketPath();
         } else {
-            sftpHomeDir = FileSystems.getDefault().getPath(properties.getBaseFolder());
+            throw new IllegalStateException("Missing bucket path");
         }
 
         return new UserRootedFileSystemFactory(sftpHomeDir);
@@ -79,7 +85,18 @@ public class SftpServer {
         sftpSubsystemFactory.addSftpEventListener(sftpEventListener);
         sshServer.setSubsystemFactories(Collections.singletonList(sftpSubsystemFactory));
 
-        sshServer.setKeyPairProvider(new SimpleGeneratorHostKeyProvider(sftpHomeDir.resolve("_key")));
+        String hostKeyAlgorithm = properties.getHostKeyAlgorithm();
+        String hostKeyPrivate = properties.getHostKeyPrivate();
+        Path privateKey = Files.createTempFile("sftp-private-host", ".key");
+        Files.write(privateKey, hostKeyPrivate.getBytes(StandardCharsets.UTF_8));
+        try {
+            sshServer.setKeyPairProvider(SshServer.setupServerKeys(null, hostKeyAlgorithm, 0, Collections.singletonList(privateKey.toAbsolutePath().toString())));
+        } catch (Exception e) {
+            throw new IOException("Error setting up key provider",e);
+        }
+        //sshServer.setKeyPairProvider(new SimpleGeneratorHostKeyProvider(sftpHomeDir.resolve("_key")));
+
+
         sshServer.setPasswordAuthenticator(passwordAuthenticator);
         sshServer.setPublickeyAuthenticator(configurePublicKeyAuthenticator(properties.getUsers()));
         sshServer.setFileSystemFactory(userRootedFileSystemFactory());
@@ -120,9 +137,9 @@ public class SftpServer {
     public static class SftpServerConfiguration {
 
         private int port = 22;
-        
-        private String baseFolder; // FIXME: Not used for now
-        private Resource publicKeyFile; // FIXME: Not used for now
+
+        private String hostKeyAlgorithm;
+        private String hostkeyPrivate;
         @Valid
         private List<SftpUserConfiguration> users = new ArrayList<>();
 
@@ -134,22 +151,6 @@ public class SftpServer {
             this.port = port;
         }
 
-        public String getBaseFolder() {
-            return baseFolder;
-        }
-
-        public void setBaseFolder(String baseFolder) {
-            this.baseFolder = baseFolder;
-        }
-
-        public Resource getPublicKeyFile() {
-            return publicKeyFile;
-        }
-
-        public void setPublicKeyFile(Resource publicKeyFile) {
-            this.publicKeyFile = publicKeyFile;
-        }
-
         public List<SftpUserConfiguration> getUsers() {
             return users;
         }
@@ -157,6 +158,16 @@ public class SftpServer {
         public void setUsers(List<SftpUserConfiguration> users) {
             this.users = users;
         }
+
+        public void setHostKeyAlgorithm(String hostKeyAlgorithm) {
+            this.hostKeyAlgorithm = hostKeyAlgorithm;
+        }
+        public String getHostKeyAlgorithm () { return hostKeyAlgorithm; }
+
+        public void setHostkeyPrivate(String hostkeyPrivate) {
+            this.hostkeyPrivate = hostkeyPrivate;
+        }
+        public String getHostKeyPrivate() { return hostkeyPrivate; }
     }
 
     public static class SftpUserConfiguration {
@@ -189,5 +200,6 @@ public class SftpServer {
         public void setPassword(String password) {
             this.password = password;
         }
+        
     }
 }
