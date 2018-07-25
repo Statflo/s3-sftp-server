@@ -120,3 +120,10 @@ CREATE TABLE `file_events` (
   CONSTRAINT `FKl4ptuh9kr9qd40m10isuadduy` FOREIGN KEY (`fe_au_id`) REFERENCES `auth_users` (`au_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 ```
+
+Dockerizing
+
+```
+docker build -t sftp
+docker run -e AWS_REGION="ca-central-1" -e AWS_ACCESS_KEY_ID="ACCESSKEYHERE" -e AWS_SECRET_ACCESS_KEY="SECRETKEYHERE" -p 2222:2222 -p 8090:8090 sftp
+```
