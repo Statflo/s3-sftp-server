@@ -20,30 +20,18 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-
         <com.upplication.s3fs.version>1.5.4</com.upplication.s3fs.version>
 		<aws-java-sdk.version>1.11.125</aws-java-sdk.version> <!-- Same version as in s3fs -->
         <org.apache.sshd.version>1.6.0</org.apache.sshd.version>
 	</properties>
 
 	<dependencies>
-		<!--<dependency>-->
-			<!--<groupId>xyz.fabiano</groupId>-->
-			<!--<artifactId>spring-localstack</artifactId>-->
-			<!--<version>0.0.5</version>-->
-		<!--</dependency>-->
 
-		<!--<dependency>-->
-			<!--<groupId>com.coveo</groupId>-->
-			<!--<artifactId>spring-boot-parameter-store-integration</artifactId>-->
-			<!--<version>1.0.0</version>-->
-		<!--</dependency>-->
-
-		<!--<dependency>-->
-			<!--<groupId>com.nitorcreations</groupId>-->
-			<!--<artifactId>spring-property-aws-ssm-resolver</artifactId>-->
-			<!--<version>1.0.0</version>-->
-		<!--</dependency>-->
+		<dependency>
+			<groupId>com.nitorcreations</groupId>
+			<artifactId>spring-property-aws-ssm-resolver</artifactId>
+			<version>1.0.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -91,11 +79,11 @@
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
         </dependency>
-<dependency>
-    <groupId>mysql</groupId>
-    <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.11</version>
-</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.11</version>
+		</dependency>
         <!-- Test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

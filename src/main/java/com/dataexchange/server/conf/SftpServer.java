@@ -94,8 +94,6 @@ public class SftpServer {
         } catch (Exception e) {
             throw new IOException("Error setting up key provider",e);
         }
-        //sshServer.setKeyPairProvider(new SimpleGeneratorHostKeyProvider(sftpHomeDir.resolve("_key")));
-
 
         sshServer.setPasswordAuthenticator(passwordAuthenticator);
         sshServer.setPublickeyAuthenticator(configurePublicKeyAuthenticator(properties.getUsers()));
