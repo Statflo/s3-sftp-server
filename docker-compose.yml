@@ -1,0 +1,7 @@
+---
+
+sftpd:
+    container_name: sftpd
+    image: 181017921891.dkr.ecr.us-east-1.amazonaws.com/s3-sftp-server
+    ports:
+        - "22:2222"
