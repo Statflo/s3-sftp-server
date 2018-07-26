@@ -1,0 +1,37 @@
+defaults: &defaults
+    # we need this because convox and the make files infer the name of the app from the directory it is run in
+    working_directory: /tmp/s3-sftp-server
+    machine:
+        enabled: true
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
+    steps:
+    - checkout
+    - run: make setup-aws ecr-auth
+    - run: docker build -t 181017921891.dkr.ecr.us-east-1.amazonaws.com/s3-sftp-server .
+    - run: docker push 181017921891.dkr.ecr.us-east-1.amazonaws.com/s3-sftp-server
+
+  deploy:
+    <<: *defaults
+    steps:
+    - checkout
+    - run: make setup-convox setup-convox-credentials
+    - run: convox login prod-ca.rack.stflo.io
+    - run: convox deploy
+
+workflows:
+    version: 2
+    build_and_deploy:
+      jobs:
+      - build
+      - deploy:
+          requires:
+           - build
+          filters:
+            branches:
+              only:
+              - master
+          
