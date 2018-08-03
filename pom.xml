@@ -25,13 +25,16 @@
         <org.apache.sshd.version>1.6.0</org.apache.sshd.version>
 	</properties>
 
-	<dependencies>
+<!--
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+-->
 
-		<dependency>
-			<groupId>com.nitorcreations</groupId>
-			<artifactId>spring-property-aws-ssm-resolver</artifactId>
-			<version>1.0.0</version>
-		</dependency>
+	<dependencies>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -74,6 +77,24 @@
 			<version>${aws-java-sdk.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-ssm</artifactId>
+			<version>${aws-java-sdk.version}</version>
+		</dependency>
+<!--
+ 	<dependency>
+		    <groupId>io.smartup.localstack</groupId>
+		    <artifactId>localstack-spring-boot-starter</artifactId>
+		    <version>1.1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.FabioBatSilva</groupId>
+			<artifactId>localstack-spring-boot</artifactId>
+			<version>master-SNAPSHOT</version>
+		</dependency>
+ -->
         <!-- DB -->
         <dependency>
             <groupId>com.h2database</groupId>

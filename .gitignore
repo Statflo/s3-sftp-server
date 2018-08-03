@@ -1,6 +1,8 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
+src/main/resources/db/zzzzz_data.sql
+
 ### STS ###
 .apt_generated
 .classpath
@@ -21,6 +23,8 @@ build/
 nbbuild/
 dist/
 nbdist/
+.tmp/
+.volumes/
 .nb-gradle/
 
 .env*

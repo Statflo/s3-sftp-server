@@ -1,0 +1,59 @@
+version: '2.1'
+
+services:
+    localstack:
+        image: localstack/localstack
+        ports:
+            - "4567-4583:4567-4583"
+            - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
+        environment:
+            - DEBUG=${DEBUG- }
+            - DOCKER_HOST=unix:///var/run/docker.sock
+        volumes:
+            - "./.volumes/localstack:/tmp/localstack"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+        healthcheck:
+            test:  nc localhost 8080
+
+    mysql:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_DATABASE: sftpd
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - "./src/main/resources/db/:/docker-entrypoint-initdb.d/"
+            - "./src/main/resources/db/data/zzzzz_data.sql:/docker-entrypoint-initdb.d/zzzzz_data.sql"
+        healthcheck:
+            test:  mysql -uroot -proot -e 'SHOW TABLES' sftpd
+
+    sftpd:
+        image: maven:3-jdk-8-alpine
+        working_dir: /usr/share/statflo
+        command: mvn clean spring-boot:run
+        ports:
+            - "2222:2222"
+        environment:
+            AWS_REGION: "ca-central-1"
+            AWS_ACCESS_KEY_ID: "ACCESSKEYHERE"
+            AWS_SECRET_ACCESS_KEY: "SECRETKEYHERE"
+
+            LOCALSTACK_ENABLED: "true"
+            LOCALSTACK_S3_ENABLED: "true"
+            LOCALSTACK_SSM_ENABLED: "true"
+            LOCALSTACK_S3_URL: "http://localstack:4572"
+            LOCALSTACK_SSM_URL: "http://localstack:4583"
+        volumes:
+            - "./:/usr/share/statflo"
+            - "./.volumes/m2:/root/.m2"
+        depends_on:
+            localstack:
+                condition: service_healthy
+            mysql:
+                condition: service_healthy
+
+    wait-for-localstack:
+        image: willwill/wait-for-it
+        command: http://localstack:4583 -- echo "localstack is up"
+        depends_on:
+            - localstack

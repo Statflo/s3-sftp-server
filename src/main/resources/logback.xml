@@ -9,6 +9,8 @@
 
     <logger name="org.springframework" level="info"/>
     <logger name="org.apache.sshd" level="info"/>
+    <logger name="com.amazonaws.http" level="debug"/>
+    <logger name="com.amazonaws.request" level="debug"/>
 
     <root level="${logback.root.level:-info}">
         <appender-ref ref="CONSOLE"/>

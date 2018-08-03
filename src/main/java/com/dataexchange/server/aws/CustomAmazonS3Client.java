@@ -24,7 +24,7 @@ public class CustomAmazonS3Client extends AmazonS3Client {
     public PutObjectResult putObject(String bucketName, String key, InputStream input, ObjectMetadata metadata)
             throws SdkClientException {
         metadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
-
+        
         return putObject(new PutObjectRequest(bucketName, key, input, metadata));
     }
 

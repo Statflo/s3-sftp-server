@@ -1,15 +1,11 @@
 package com.dataexchange.server.conf;
 
-import com.dataexchange.server.aws.CustomAmazonS3ClientFactory;
 import com.dataexchange.server.domain.UserService;
 import com.dataexchange.server.sshd.TrackingSftpEventListener;
 import com.dataexchange.server.sshd.UserPublicKeyAuthenticator;
+import com.dataexchange.server.sshd.file.CustomFileSystemProvider;
 import com.dataexchange.server.sshd.file.UserRootedFileSystemFactory;
 import com.dataexchange.server.sshd.util.AuthorizedKeysUtils;
-
-import com.google.common.collect.ImmutableMap;
-
-import com.upplication.s3fs.S3FileSystemProvider;
 
 import org.apache.sshd.common.file.FileSystemFactory;
 import org.apache.sshd.server.SshServer;
@@ -104,12 +100,9 @@ public class SftpServer {
         return sshServer;
     }
 
-
     private Path getS3BucketPath() throws URISyntaxException, IOException {
-        Map<String, ?> env = ImmutableMap.<String, Object>builder()
-                .put(S3FileSystemProvider.AMAZON_S3_FACTORY_CLASS, CustomAmazonS3ClientFactory.class.getName()).build();
-
-        FileSystem fileSystem = FileSystems.newFileSystem(new URI("s3:///"), env, Thread.currentThread().getContextClassLoader());
+        final Map<String, ?> env = CustomFileSystemProvider.ENV;
+        final FileSystem fileSystem = FileSystems.newFileSystem(new URI("s3:///"), env, Thread.currentThread().getContextClassLoader());
 
         return fileSystem.getPath("/" + bucketName);
     }
@@ -198,6 +191,6 @@ public class SftpServer {
         public void setPassword(String password) {
             this.password = password;
         }
-        
+
     }
 }

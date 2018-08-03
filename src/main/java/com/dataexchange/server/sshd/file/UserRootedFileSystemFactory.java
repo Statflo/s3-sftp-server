@@ -9,7 +9,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.Collections;
+import java.util.Map;
 
 public class UserRootedFileSystemFactory extends VirtualFileSystemFactory {
 
@@ -19,13 +19,15 @@ public class UserRootedFileSystemFactory extends VirtualFileSystemFactory {
 
     @Override
     public FileSystem createFileSystem(Session session) throws IOException {
-        String username = session.getUsername();
-        Path dir = computeRootDir(session);
+        final Map<String, ?> env = CustomFileSystemProvider.ENV;
+        final String username = session.getUsername();
+        final Path dir = computeRootDir(session);
+
         if (dir == null) {
             throw new InvalidPathException(username, "Cannot resolve home directory");
         }
 
-        return new RootedFileSystemProvider().newFileSystem(dir, Collections.emptyMap());
+        return new RootedFileSystemProvider().newFileSystem(dir, env);
     }
 
     @Override
@@ -33,6 +35,7 @@ public class UserRootedFileSystemFactory extends VirtualFileSystemFactory {
         Path userHomeDir = super.getUserHomeDir(username);
         if (userHomeDir == null) {
             Path userDir = getDefaultHomeDir().resolve(username);
+        
             if (Files.notExists(userDir)) {
                 try {
                     Files.createDirectory(userDir);
