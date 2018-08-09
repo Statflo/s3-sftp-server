@@ -1,5 +1,6 @@
 package com.dataexchange.server.aws;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -38,5 +39,19 @@ public class CustomAmazonS3Client extends AmazonS3Client {
         newObjectMetadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
 
         return super.copyObject(copyObjectRequest);
+    }
+
+    @Override
+    public InitiateMultipartUploadResult initiateMultipartUpload(final InitiateMultipartUploadRequest request) throws SdkClientException, AmazonServiceException {
+        ObjectMetadata metadata = request.getObjectMetadata();
+
+        if (metadata == null) {
+            metadata = new ObjectMetadata();
+        }
+
+        metadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
+        request.setObjectMetadata(metadata);
+
+        return super.initiateMultipartUpload(request);
     }
 }

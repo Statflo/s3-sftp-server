@@ -47,6 +47,11 @@ import java.util.Collections;
 @EnableConfigurationProperties(SftpServer.SftpServerConfiguration.class)
 public class SftpServer {
 
+    public static final Map<String, ?> ENV = ImmutableMap.<String, Object>builder()
+        .put(S3FileSystemProvider.AMAZON_S3_FACTORY_CLASS, CustomAmazonS3ClientFactory.class.getName())
+        .put(S3FileSystemProvider.MULTIPART_UPLOAD_ENABLED, "true")
+        .build();
+
     @Value("${app.sftp.aws.bucket-name}")
     private String bucketName;
 
@@ -106,10 +111,8 @@ public class SftpServer {
 
 
     private Path getS3BucketPath() throws URISyntaxException, IOException {
-        Map<String, ?> env = ImmutableMap.<String, Object>builder()
-                .put(S3FileSystemProvider.AMAZON_S3_FACTORY_CLASS, CustomAmazonS3ClientFactory.class.getName()).build();
-
-        FileSystem fileSystem = FileSystems.newFileSystem(new URI("s3:///"), env, Thread.currentThread().getContextClassLoader());
+        final URI uri = new URI("s3:///");
+        final FileSystem fileSystem = FileSystems.newFileSystem(uri, ENV, Thread.currentThread().getContextClassLoader());
 
         return fileSystem.getPath("/" + bucketName);
     }
@@ -198,6 +201,6 @@ public class SftpServer {
         public void setPassword(String password) {
             this.password = password;
         }
-        
+
     }
 }
