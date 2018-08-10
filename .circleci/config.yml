@@ -39,6 +39,8 @@ workflows:
               branches:
                 ignore:
                 - master
+              tags:
+                ignore: /.*/
 
     build_and_deploy_to_prod:
         jobs:
