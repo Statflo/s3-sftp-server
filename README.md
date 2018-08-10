@@ -4,7 +4,7 @@ Logs everything to a database (MySQL)
 
 ## How to use
 
-Listing parameters from ssm:
+Listing parameters from ssm: 
 
 ```
 aws ssm get-parameters-by-path --path /sftp --with-decryption --recursive --region ca-central-1
