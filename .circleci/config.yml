@@ -50,6 +50,8 @@ workflows:
               tags:
                 only: /^v.*/
         - build
+            requires:
+            - test
         - deploy:
             requires:
             - build
