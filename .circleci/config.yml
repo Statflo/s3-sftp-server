@@ -37,8 +37,7 @@ workflows:
         - test:
             filters:
               branches:
-                ignore:
-                - master
+                only: master
               tags:
                 ignore: /.*/
 
