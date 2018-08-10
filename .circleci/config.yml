@@ -49,7 +49,7 @@ workflows:
                 ignore: /.*/
               tags:
                 only: /^v.*/
-        - build
+        - build:
             requires:
             - test
         - deploy:
