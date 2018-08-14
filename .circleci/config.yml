@@ -50,8 +50,18 @@ workflows:
               tags:
                 only: /^v.*/
         - build:
+            filters:
+              branches:
+                ignore: /.*/
+              tags:
+                only: /^v.*/
             requires:
             - test
         - deploy:
+            filters:
+              branches:
+                ignore: /.*/
+              tags:
+                only: /^v.*/
             requires:
             - build
