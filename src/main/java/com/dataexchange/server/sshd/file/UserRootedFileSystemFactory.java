@@ -1,5 +1,6 @@
 package com.dataexchange.server.sshd.file;
 
+import com.dataexchange.server.conf.SftpServer;
 import org.apache.sshd.common.file.root.RootedFileSystemProvider;
 import org.apache.sshd.common.file.virtualfs.VirtualFileSystemFactory;
 import org.apache.sshd.common.session.Session;
@@ -9,7 +10,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.Collections;
 
 public class UserRootedFileSystemFactory extends VirtualFileSystemFactory {
 
@@ -25,7 +25,7 @@ public class UserRootedFileSystemFactory extends VirtualFileSystemFactory {
             throw new InvalidPathException(username, "Cannot resolve home directory");
         }
 
-        return new RootedFileSystemProvider().newFileSystem(dir, Collections.emptyMap());
+        return new RootedFileSystemProvider().newFileSystem(dir, SftpServer.ENV);
     }
 
     @Override

@@ -34,6 +34,11 @@ Running the app
 AWS_REGION="ca-central-1" AWS_ACCESS_KEY_ID="ACCESSKEYHERE" AWS_SECRET_ACCESS_KEY="SECRETKEYHERE" java -jar target/s3-sftp-1.0.1-SNAPSHOT.jar
 ```
 
+### Running the app localy
+```
+make start AWS_ACCESS_KEY_ID=ACCESSKEYHERE AWS_SECRET_ACCESS_KEY=SECRETKEYHERE
+```
+
 ### How to configure your app
 
 Example configuration:

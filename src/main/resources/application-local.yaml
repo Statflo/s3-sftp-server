@@ -1,0 +1,43 @@
+app:
+  sftp:
+    users:
+      -
+        username: test
+        password: test
+    aws:
+      bucket-name: "test-sftp-uploader"
+    hostkey-algorithm: "RSA"
+    hostkey-private: |
+      -----BEGIN RSA PRIVATE KEY-----
+      MIIEowIBAAKCAQEArXpNaJAOXsgNe8OIFzWrKMC0D5yE3GV8TPjdAWy8n7MjOole
+      DbEH5DzO1fKlLMCQGITjZuouSY3yE8zMC9xs4hE5e+KTSStreK1E9X3csSszuOLr
+      +olj/C3ZcMKNq2s0TPBu691cRnTwVaL1V75V32rfCHz8NShCxyYXNiahycrOL2Bm
+      9Cu8AMZcm1e9POgqABZbP2cP5MDy+Vw4RMw8XI8G6ClCQBlJayNAhqMDDw+80A/Z
+      MBt3OyDOJ7o2xq/sJAIhppck+Fw43W04BIQwIrmEucBs1c6Np/+ePvk5jKhII5iE
+      2+7nQizwwUJQmzdmTcciLJ8CMhZ7FDUobXFHwQIDAQABAoIBAQCtLbq495Zg6DUN
+      qFTjVqBXPoiCTS4VFvrPnGCEW5ixlJNGjHtoD6JhJpMU4fYihtlSoNailoU+yIUx
+      XvETpijMRYWtNrLyCHZxMgf1SoBWHVq051PL9/voc5zuBEqJJaxAYoVY0NKdQ3/o
+      /ZUO0uPG9VlRj/P23QpM5KmnVUmNt1L6nml9v9J/yeO/GlMtv5FEwJm11uHeeWGn
+      Qfh/4B6hyDXsCOCAhD5C7G4hWChzs6q/IRI+swiocSf5S5u6N2h1HdZz3W0Q92lQ
+      BAFypWjCPDlMHzRgbtMUKQ2n8bv78svEe7kAgZvEX8dqnE0EJGLlJP2fo1nv6BQt
+      VmWMTMsBAoGBANQHndt+gXx75amGfTYyIK51dXahagfMiz4JGPBrzrZ4zOW10opU
+      zvvB0p2ApaKr8+jZtRLxHZToof/8Cck2RUodwS00he/Ikbz7GdwqDoiyWbjVTaut
+      +HJNn3zUxHSMDTHxU+DOVrIb79vqUweAYlq2ManPRzi7yDVkZv3ssr0FAoGBANF0
+      AoNV8w8gGDfV8O6P/wTSXmkRfvk8WkTOkOoOHCTHXt4QuTZ5Q6v7ad0BlSj/A+sN
+      qScpn0GQsDNdgqSCoXdXDgKWjUqKvcwN+SLq5f0uPeGFkL3GuGraK+jAaxjXml4q
+      eb3MoSzMmlHXO7LorbNXcYXen180j34jFgcOijyNAoGAcXoeFzIulPQuZzuOWeoc
+      KaK9mh8rgz8KqsntqgbY3Dns12gnZVeca4tBcIBApb5HzTBvQ9L91QtoYHuAtUqx
+      bMhd8haxNDLxJOZy4a00mB5z/INUjXSPioVWvVWWSxYFndwd2ywzpCFljxprE5G3
+      kfr+u3YvFQMTVNgGcxIyWw0CgYBps/Q4t72MWpQeSZfnrT/z/P6sY6oCuhSMOPsl
+      Q62sWflkdGgkN5qRRrYsVMokAF7H1wMQwo6elhh2M7DkuRAnnAV0BOqVPeN/AWZD
+      2uvqk9Wi5LchLxKOyj/ynHjv9o7vCtyZjpWgeDlBKC/2oDpZEb424xzm/S2VaLuL
+      IClfWQKBgF/aQ0Jxhg1LCTK/gZmqyxXyvxu7x2Utedxt7hI6ia3eSvfXowgcOXMT
+      mfixttpPUobQhk43y5/h3N7gFGKxZQV6/ZFeBG7Dvck2NWgutNwqvbhFtfhVf37E
+      PP+E8udcWsXfU2ZjPAIrApFNIwIYtEOsisy2QTZkN8BaTKcHq6+S
+      -----END RSA PRIVATE KEY-----
+
+spring:
+  datasource:
+    url: "jdbc:mysql://mysql/sftpd?useSSL=false&serverTimezone=UTC"
+    username: "root"
+    password: "root"
